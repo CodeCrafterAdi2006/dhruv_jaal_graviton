@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "title": "Kathmandu Valley Floods: What if the mesh was already there?",
+    "event": "Kathmandu Valley floods, 27-29 Sep 2024",
+    "disclaimer": "Simulation. Scripted scenario based on public reports of the September 2024 Kathmandu floods. Device positions, flood zone and message times are illustrative, not measured.",
+    "map": {
+      "center": { "lat": 27.6945, "lon": 85.3100 },
+      "zoom": 14.3,
+      "pitch": 52,
+      "bearing": -15
+    },
+    "rssiBands": [
+      { "name": "strong", "minDbm": -80, "maxDbm": -60, "color": "#2ee66b" },
+      { "name": "medium", "minDbm": -100, "maxDbm": -81, "color": "#ffb020" },
+      { "name": "weak", "minDbm": -120, "maxDbm": -101, "color": "#ff3b3b" }
+    ],
+    "hopSeconds": 1.2
+  },
+  "zones": [
+    {
+      "id": "FZ1",
+      "type": "flood",
+      "label": "Flood zone (illustrative)",
+      "polygon": [
+        { "lat": 27.6840, "lon": 85.2930 },
+        { "lat": 27.6830, "lon": 85.3040 },
+        { "lat": 27.6880, "lon": 85.3180 },
+        { "lat": 27.6945, "lon": 85.3200 },
+        { "lat": 27.6960, "lon": 85.3120 },
+        { "lat": 27.6975, "lon": 85.3060 },
+        { "lat": 27.6935, "lon": 85.3000 },
+        { "lat": 27.6890, "lon": 85.2940 }
+      ]
+    },
+    {
+      "id": "SZ1",
+      "type": "safe",
+      "label": "Safe ground: relays are launched from here",
+      "center": { "lat": 27.7020, "lon": 85.3160 },
+      "radius_m": 350
+    }
+  ],
+  "nodes": [
+    { "id": "N1", "role": "dongle", "label": "SURVIVOR", "sublabel": "Balkhu Rooftop", "place": "Balkhu (Tin Roof Survivor)", "lat": 27.6862, "lon": 85.2975, "alt_m": 12 },
+    { "id": "N2", "role": "relay", "label": "COMMUNITY RELAY", "sublabel": "Balkhu Market", "place": "Balkhu Market (Volunteer Rooftop)", "lat": 27.6905, "lon": 85.3015, "alt_m": 6 },
+    { "id": "N3", "role": "relay", "label": "COMMUNITY RELAY", "sublabel": "Teku Ward", "place": "Teku Ward Office (Submerges at 22s)", "lat": 27.6950, "lon": 85.3060, "alt_m": 6 },
+    { "id": "N4", "role": "relay", "label": "COMMUNITY RELAY", "sublabel": "Kalimati Cross", "place": "Kalimati Crossroad (Solar Mesh)", "lat": 27.7000, "lon": 85.3105, "alt_m": 6 },
+    { "id": "N5", "role": "relay", "label": "COMMUNITY RELAY", "sublabel": "Sundarighat", "place": "Sundarighat Depot (Store & Forward)", "lat": 27.6880, "lon": 85.3080, "alt_m": 6 },
+    { "id": "N6", "role": "relay", "label": "COMMUNITY RELAY", "sublabel": "Thapathali", "place": "Thapathali School (Submerges at 40s)", "lat": 27.6925, "lon": 85.3150, "alt_m": 6 },
+    { "id": "N7", "role": "relay", "label": "COMMUNITY RELAY", "sublabel": "Maitighar", "place": "Maitighar Office (Rooftop Mesh)", "lat": 27.6975, "lon": 85.3190, "alt_m": 6 },
+    { "id": "N8", "role": "helper", "label": "BASE CAMP HQ", "sublabel": "Rescue Command", "place": "Central Kathmandu (Safe Ground HQ)", "lat": 27.7020, "lon": 85.3160, "alt_m": 0 },
+    { "id": "DR1", "role": "drone", "label": "DRONE 1", "sublabel": "Teku Bridge", "alt_m": 80, "hidden": true, "lat": 27.6950, "lon": 85.3060 },
+    { "id": "DR2", "role": "drone", "label": "DRONE 2", "sublabel": "Basin Relay", "alt_m": 80, "hidden": true, "lat": 27.6925, "lon": 85.3150 },
+    { "id": "BL1", "role": "balloon", "label": "BALLOON 1", "alt_m": 100, "tethered": true, "hidden": true, "place": "Teku Drone Relief Station", "lat": 27.6950, "lon": 85.3060 },
+    { "id": "BL2", "role": "balloon", "label": "BALLOON 2", "alt_m": 100, "tethered": true, "hidden": true, "place": "Open ground near base camp", "lat": 27.7000, "lon": 85.3150 }
+  ],
+  "cellTowers": [
+    { "id": "T1", "name": "Cell Tower (Kalimati)", "lat": 27.7040, "lon": 85.3000 },
+    { "id": "T2", "name": "Cell Tower (Koteshwor)", "lat": 27.6900, "lon": 85.3250 },
+    { "id": "T3", "name": "Cell Tower (Singhadurbar)", "lat": 27.7080, "lon": 85.3200 }
+  ],
+  "edges": [
+    { "a": "N1", "b": "N2", "baseRssi": -72 },
+    { "a": "N1", "b": "N5", "baseRssi": -88 },
+    { "a": "N2", "b": "N3", "baseRssi": -78 },
+    { "a": "N2", "b": "N5", "baseRssi": -83 },
+    { "a": "N3", "b": "N4", "baseRssi": -76 },
+    { "a": "N3", "b": "N5", "baseRssi": -82 },
+    { "a": "N3", "b": "N6", "baseRssi": -80 },
+    { "a": "N4", "b": "N7", "baseRssi": -78 },
+    { "a": "N4", "b": "N8", "baseRssi": -70 },
+    { "a": "N5", "b": "N6", "baseRssi": -81 },
+    { "a": "N6", "b": "N7", "baseRssi": -79 },
+    { "a": "N7", "b": "N8", "baseRssi": -74 },
+    { "a": "N2", "b": "DR1", "baseRssi": -74, "droneLink": true },
+    { "a": "DR1", "b": "N4", "baseRssi": -72, "droneLink": true },
+    { "a": "N5", "b": "DR1", "baseRssi": -79, "droneLink": true },
+    { "a": "DR1", "b": "N8", "baseRssi": -69, "droneLink": true },
+    { "a": "N2", "b": "BL1", "baseRssi": -76, "balloonLink": true },
+    { "a": "BL1", "b": "N4", "baseRssi": -72, "balloonLink": true },
+    { "a": "BL1", "b": "N8", "baseRssi": -66, "balloonLink": true },
+    { "a": "N5", "b": "BL1", "baseRssi": -80, "balloonLink": true }
+  ],
+  "timeline": [
+    { "t": 0,  "type": "phase", "id": "P1", "label": "Part 1: Initial Grid Active · Baseline Relay Health", "simClock": "Fri 27 Sep, 22:00" },
+    { "t": 2,  "type": "sos", "id": "SOS1", "from": "N1", "path": ["N1", "N2", "N3", "N4", "N8"], "ackPath": ["N8", "N4", "N3", "N2", "N1"], "people": 3, "need": "MEDICAL", "battery": 23, "simClock": "Sat 28 Sep, 02:15", "text": "BALKHU ROOFTOP: 3 PEOPLE TRAPPED. NEED MEDICAL ASSISTANCE." },
+    { "t": 18, "type": "phase", "id": "P2", "label": "Part 2: Bagmati Flood Surge · Relay Submerged & Route Blocked", "simClock": "Sat 28 Sep, 04:30" },
+    { "t": 19, "type": "towers", "status": "offline" },
+    { "t": 21, "type": "node_status", "id": "N3", "status": "down", "reason": "Submerged by Bagmati flash surge (3.2m water)", "simClock": "Sat 28 Sep, 05:40" },
+    { "t": 24, "type": "sos", "id": "SOS2", "from": "N1", "path": ["N1", "N2", "DR1", "N4", "N8"], "ackPath": ["N8", "N4", "BL1", "N2", "N1"], "people": 4, "need": "RESCUE", "battery": 18, "holdUntil": 38, "simClock": "Sat 28 Sep, 06:10", "text": "WATER REACHING 2ND FLOOR. TIN ROOF FLOODING. NEED BOAT." },
+    { "t": 30, "type": "phase", "id": "P3", "label": "Part 3: Base Camp Detects Void · Aerial Drone Dispatched", "simClock": "Sat 28 Sep, 06:30" },
+    { "t": 31, "type": "drones_launch", "ids": ["DR1"], "from": "N8", "flightSeconds": 5 },
+    { "t": 36, "type": "drones_online", "ids": ["DR1"] },
+    { "t": 46, "type": "phase", "id": "P4", "label": "Part 4: Tethered Balloon Takes Over · Drone Returns · Balloon ACK", "simClock": "Sat 28 Sep, 07:15" },
+    { "t": 47, "type": "balloons_launch", "ids": ["BL1"], "riseSeconds": 5 },
+    { "t": 52, "type": "balloons_online", "ids": ["BL1"] },
+    { "t": 53, "type": "drones_recall", "ids": ["DR1"], "to": "N8", "flightSeconds": 4, "reason": "Handoff to balloon complete · Returning to base" },
+    { "t": 68, "type": "phase", "id": "P5", "label": "Part 5: Mission Summary & Two-Way Rescue Verification", "simClock": "Sat 28 Sep, 08:30" },
+    { "t": 76, "type": "summary", "delivered": 2, "nodeFailures": 1, "dronesDeployed": 1, "balloonsDeployed": 1, "withoutMesh": { "delivered": 0 } }
+  ]
+}

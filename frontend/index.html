@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>LoRa Mesh Network | Disaster Visualizer</title>
+
+  <!-- MapLibre GL JS & CSS (Fast, reliable 3D WebGL map engine with built-in worker) -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <link rel="stylesheet" href="/src/hud.css" />
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div id="app-layout">
+    <!-- Left: 78% Map Viewport -->
+    <main id="map-viewport">
+      <div id="map"></div>
+
+      <!-- Top Overlay Header -->
+      <header class="map-overlay-header">
+        <div class="brand">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="#2ee66b" stroke-width="2">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+            <line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"></line>
+          </svg>
+          <span class="brand-title">DHRUVAJAAL</span>
+          <span class="brand-subtitle">LoRa Mesh Network / Disaster Relief</span>
+          <span class="badge-scenario" id="source-badge">Scenario</span>
+          <span class="badge-hardware offline" id="hw-server-badge" title="Local Air-Gapped Application Server Status">● Local Server: Offline</span>
+        </div>
+
+        <div class="header-center-controls">
+          <!-- Mode Switcher -->
+          <div class="mode-switch-group">
+            <button class="mode-btn active" id="btn-mode-replay" title="100-Second Scripted Disaster Story">
+              <span>Incident Replay</span>
+            </button>
+            <button class="mode-btn" id="btn-mode-sandbox" title="Live Interactive Disaster Sandbox & Stress-Test">
+              <span>Tactical Sandbox</span>
+            </button>
+          </div>
+
+          <!-- Primary Start / Pause Simulation Button -->
+          <button class="header-play-btn" id="btn-header-play" title="Start / Pause Simulation (Space)">
+            <span class="header-play-icon">▶</span>
+            <span class="header-play-label">Start Simulation</span>
+          </button>
+        </div>
+
+        <div class="header-actions">
+          <button class="context-btn" id="btn-context" title="View historical flood facts & response plan">
+            <span class="context-btn-icon">ℹ</span>
+            <span>Context &amp; Plan</span>
+          </button>
+          <div class="mesh-toggle-group">
+            <button class="toggle-btn active" id="btn-with-mesh">With mesh</button>
+            <button class="toggle-btn" id="btn-without-mesh">Without mesh</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Top-Center Alert Banner (Triggered at t=6s) -->
+      <div class="alert-banner" id="network-alert-banner">
+        <span class="alert-tag">ALERT</span>
+        <span class="alert-text">Phone network DOWN</span>
+      </div>
+
+      <!-- Top-Left Full Legend Card (Matching Mockup) -->
+      <div class="tactical-legend-card">
+        <div class="legend-row">
+          <span class="legend-bar strong"></span>
+          <span class="legend-label">Strong signal</span>
+          <span class="legend-val">(-60 to -80 dBm)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-bar medium"></span>
+          <span class="legend-label">Medium signal</span>
+          <span class="legend-val">(-81 to -100 dBm)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-bar weak"></span>
+          <span class="legend-label">Weak signal</span>
+          <span class="legend-val">(-101 to -120 dBm)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-bar alternate"></span>
+          <span class="legend-label">Alternate route</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-symbol packet">➔</span>
+          <span class="legend-label">Packet flow</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot dot-survivor"></span>
+          <span class="legend-label"><strong>Survivor Device</strong> (N1, Dynamic)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot dot-relay"></span>
+          <span class="legend-label"><strong>Community Relay</strong> (N2–N7 Rooftops)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot dot-base"></span>
+          <span class="legend-label"><strong>Base Camp HQ</strong> (N8 Rescue Post)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot dot-drone"></span>
+          <span class="legend-label"><strong>Airborne Drone</strong> (80m Relay)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot dot-balloon"></span>
+          <span class="legend-label"><strong>Tethered Balloon</strong> (100m Aerostat)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-dot dot-flooded"></span>
+          <span class="legend-label"><strong>Flooded Node</strong> (Submerged)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-symbol flood-box">░</span>
+          <span class="legend-label">Flood zone (illustrative)</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-symbol safe-box">░</span>
+          <span class="legend-label">Safe ground</span>
+        </div>
+      </div>
+
+      <!-- Compass removed to ensure unobstructed controls and zero clutter -->
+    </main>
+
+    <!-- Right: 22% Telemetry Sidebar -->
+    <aside id="sidebar">
+      <!-- Section 1: Base Camp Inbox (HQ Message Dispatch - Top Priority) -->
+      <section class="sidebar-section inbox-section">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-title">BASE CAMP INBOX</span>
+          </div>
+          <span class="status-live" id="inbox-count">0 DELIVERED</span>
+        </div>
+        <div class="inbox-container" id="inbox-list">
+          <div class="inbox-empty">
+            <div class="inbox-waiting-pulse"></div>
+            <div>Awaiting incoming mesh dispatches...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Real-Time Incident & Packet Log -->
+      <section class="sidebar-section">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-title">MESSAGE &amp; EVENT LOG</span>
+          </div>
+          <span class="status-live">● LIVE</span>
+        </div>
+        <div class="log-container" id="log-feed">
+        </div>
+      </section>
+
+      <!-- Section 3: Live Nodes RSSI (Fixed layout, no text overlap) -->
+      <section class="sidebar-section">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-title" id="sector-title">SECTOR 4 TACTICAL CORRIDOR</span>
+          </div>
+          <span class="section-count" id="nodes-count">8 NODES</span>
+        </div>
+        <div class="nodes-list" id="nodes-list">
+        </div>
+      </section>
+
+      <!-- Section 4: Network Stats -->
+      <section class="sidebar-section">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-title">NETWORK TELEMETRY</span>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="stat-label">HOP COUNT</span>
+            <span class="stat-value" id="stat-hops">—</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">SUCCESS RATE</span>
+            <span class="stat-value" id="stat-rate">100%</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">AVG. RSSI</span>
+            <span class="stat-value" id="stat-rssi">-77 dBm</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">NODES ONLINE</span>
+            <span class="stat-value" id="stat-nodes">8 / 8</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Action Controls -->
+      <section class="sidebar-section actions" id="sidebar-actions">
+        <button class="btn btn-primary" id="btn-spawn-node">
+          Drop Survivor Node
+        </button>
+        <button class="btn btn-secondary" id="btn-reset">
+          Reset Network
+        </button>
+      </section>
+    </aside>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

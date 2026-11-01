@@ -1,0 +1,14 @@
+node_modules/
+frontend/node_modules/
+survivor_app/node_modules/
+.DS_Store
+dist/
+frontend/dist/
+survivor_app/dist/
+.env
+.env.local
+__pycache__/
+*.pyc
+dhruvajaal.zip
+ppt_dhruvjaal.pdf
+*.log
